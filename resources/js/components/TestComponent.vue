@@ -72,9 +72,9 @@
                 </thead>
                 <tbody>
 
-                <tr v-for="(item, items) in Data"> <!-- Цикл по строкам -->
+                <tr v-for="(item, val) in Data"> <!-- Цикл по строкам -->
 
-                    <td style="text-align:center"><b>{{items + 1}}</b></td> <!-- Номер строки -->
+                    <td style="text-align:center"><b>{{val + 1}}</b></td> <!-- Номер строки -->
                     <td><input class="th180" v-model="item['name']" placeholder="Введите наименование"
                                title="Введите наименование товара"></td> <!-- Наименование -->
                     <td><input class="th60" v-model="item['count']" type="number" min="0" max="999999"
@@ -85,13 +85,13 @@
                     <td><input class="th60 thAm" v-model="item['amount']" readonly title="Сумма за товар"></td> <!-- Сумма за товар -->
 
                     <td style="display: flex;">
-                        <button class="b20" v-if="Data.length > 1" v-on:click="DeleteRow(items)" title="Удалить строку">del</button>
+                        <button class="b20" v-if="Data.length > 1" v-on:click="DeleteRow(val)" title="Удалить строку">del</button>
                         <!-- Удалить строку (если строк больше одной) -->
-                        <button class="b20" v-if="Data.length >= 0" v-on:click="UpNumber(items)" title="Добавить кол-во">+</button>
+                        <button class="b20" v-if="Data.length >= 0" v-on:click="UpNumber(val)" title="Добавить кол-во">+</button>
                         <!-- Увеличить количество товара -->
-                        <button class="b20" v-if="Data.length >= 0" v-on:click="DownNumber(items)" title="Добавить кол-во">-</button>
+                        <button class="b20" v-if="Data.length >= 0" v-on:click="DownNumber(val)" title="Добавить кол-во">-</button>
                         <!-- Уменьшить количество товара -->
-                        <button class="b20" v-if="Data.length >= 0" v-on:click="ClearRow(items)" title="">х</button>
+                        <button class="b20" v-if="Data.length >= 0" v-on:click="ClearRow(val)" title="">х</button>
                         <!-- Очитить значения в строке -->
                     </td>
                 </tr>
@@ -111,7 +111,6 @@
     export default {
         data: function () {
             return {
-                FullPrice: 70, // Итоговая сумма
                 Data: [ // Массив строк
                     {name: '', count: 0, price: '', amount: ''}
                 ]
@@ -119,6 +118,7 @@
         },
         computed: { // Определяем вычисляемое свойство для автоматического пересчета сумм и итога
             CalcPrice: function () { // Расчёт сумм по строкам и общего остатка
+                this.FullPrice = 70;
                 for (var i = 0; i < this.Data.length; ++i) { // Цикл по строкам таблицы
                     this.Data[i].amount = this.Data[i].count * this.Data[i].price; // Расчёт суммы в строке
                     this.FullPrice = this.FullPrice - this.Data[i].amount; // Расчёт остатка средств
@@ -130,23 +130,23 @@
             AddNewRow: function () { // Добавить новую строку в таблицу
                 this.Data.push({name: '', count: 0, price: '', amount: ''});
             },
-            DeleteRow: function (items) { // Удалить строку с номером i из таблицы
-                this.Data.splice(items, 1);
+            DeleteRow: function (i) { // Удалить строку с номером i из таблицы
+                this.Data.splice(i, 1);
             },
-            UpNumber: function (items) { //Увеличить на +1 количество в строке с номером i
-                this.Data[items].count++;
+            UpNumber: function (i) { //Увеличить на +1 количество в строке с номером i
+                this.Data[i].count++;
             },
-            DownNumber: function (items) { //Уменьшить на +1 количество в строке с номером i
-                this.Data[items].count--;
-                if (this.Data[items].count < 0) {
+            DownNumber: function (i) { //Уменьшить на +1 количество в строке с номером i
+                this.Data[i].count--;
+                if (this.Data[i].count < 0) {
                     alert('Значение не может быть отрицательным');
                 }
             },
-            ClearRow: function (items) {
-                this.Data[items].name = '';
-                this.Data[items].count = 0;
-                this.Data[items].price = '';
-                this.Data[items].amount = '';
+            ClearRow: function (i) {
+                this.Data[i].name = '';
+                this.Data[i].count = 0;
+                this.Data[i].price = '';
+                this.Data[i].amount = '';
             },
         },
     }

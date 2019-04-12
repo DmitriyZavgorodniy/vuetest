@@ -1908,8 +1908,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      FullPrice: 70,
-      // Итоговая сумма
       Data: [// Массив строк
       {
         name: '',
@@ -1923,6 +1921,8 @@ __webpack_require__.r(__webpack_exports__);
     // Определяем вычисляемое свойство для автоматического пересчета сумм и итога
     CalcPrice: function CalcPrice() {
       // Расчёт сумм по строкам и общего остатка
+      this.FullPrice = 70;
+
       for (var i = 0; i < this.Data.length; ++i) {
         // Цикл по строкам таблицы
         this.Data[i].amount = this.Data[i].count * this.Data[i].price; // Расчёт суммы в строке
@@ -1943,27 +1943,27 @@ __webpack_require__.r(__webpack_exports__);
         amount: ''
       });
     },
-    DeleteRow: function DeleteRow(items) {
+    DeleteRow: function DeleteRow(i) {
       // Удалить строку с номером i из таблицы
-      this.Data.splice(items, 1);
+      this.Data.splice(i, 1);
     },
-    UpNumber: function UpNumber(items) {
+    UpNumber: function UpNumber(i) {
       //Увеличить на +1 количество в строке с номером i
-      this.Data[items].count++;
+      this.Data[i].count++;
     },
-    DownNumber: function DownNumber(items) {
+    DownNumber: function DownNumber(i) {
       //Уменьшить на +1 количество в строке с номером i
-      this.Data[items].count--;
+      this.Data[i].count--;
 
-      if (this.Data[items].count < 0) {
+      if (this.Data[i].count < 0) {
         alert('Значение не может быть отрицательным');
       }
     },
-    ClearRow: function ClearRow(items) {
-      this.Data[items].name = '';
-      this.Data[items].count = 0;
-      this.Data[items].price = '';
-      this.Data[items].amount = '';
+    ClearRow: function ClearRow(i) {
+      this.Data[i].name = '';
+      this.Data[i].count = 0;
+      this.Data[i].price = '';
+      this.Data[i].amount = '';
     }
   }
 });
@@ -37750,10 +37750,10 @@ var render = function() {
         _vm._v(" "),
         _c(
           "tbody",
-          _vm._l(_vm.Data, function(item, items) {
+          _vm._l(_vm.Data, function(item, val) {
             return _c("tr", [
               _c("td", { staticStyle: { "text-align": "center" } }, [
-                _c("b", [_vm._v(_vm._s(items + 1))])
+                _c("b", [_vm._v(_vm._s(val + 1))])
               ]),
               _vm._v(" "),
               _c("td", [
@@ -37876,7 +37876,7 @@ var render = function() {
                         attrs: { title: "Удалить строку" },
                         on: {
                           click: function($event) {
-                            return _vm.DeleteRow(items)
+                            return _vm.DeleteRow(val)
                           }
                         }
                       },
@@ -37892,7 +37892,7 @@ var render = function() {
                         attrs: { title: "Добавить кол-во" },
                         on: {
                           click: function($event) {
-                            return _vm.UpNumber(items)
+                            return _vm.UpNumber(val)
                           }
                         }
                       },
@@ -37908,7 +37908,7 @@ var render = function() {
                         attrs: { title: "Добавить кол-во" },
                         on: {
                           click: function($event) {
-                            return _vm.DownNumber(items)
+                            return _vm.DownNumber(val)
                           }
                         }
                       },
@@ -37924,7 +37924,7 @@ var render = function() {
                         attrs: { title: "" },
                         on: {
                           click: function($event) {
-                            return _vm.ClearRow(items)
+                            return _vm.ClearRow(val)
                           }
                         }
                       },
